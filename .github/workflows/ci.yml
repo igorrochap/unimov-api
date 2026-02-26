@@ -79,5 +79,8 @@ jobs:
           tools: composer:v2
           coverage: none
 
+      - name: Install Dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
       - name: Check for known vulnerabilities
         run: composer audit
