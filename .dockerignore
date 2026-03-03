@@ -1,0 +1,17 @@
+.git
+.github
+.claude
+.idea
+.vscode
+.zed
+node_modules
+vendor
+storage/logs
+storage/pail
+public/build
+public/hot
+*.log
+.env.backup
+.env.production
+.DS_Store
+Thumbs.db
