@@ -39,6 +39,7 @@ class Usuario extends Authenticatable
         'remember_token',
     ];
 
+    /** @return BelongsTo<Municipio, $this> */
     public function municipio(): BelongsTo
     {
         return $this->belongsTo(Municipio::class);

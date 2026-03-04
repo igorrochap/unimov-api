@@ -23,7 +23,7 @@ final readonly class AtualizaUsuarioDTO
             $request->string('nome'),
             $request->string('cpf'),
             $request->string('email'),
-            $request->string('senha') ?: null,
+            $request->string('senha'),
             $request->integer('municipio'),
             $request->string('perfil'),
         );
