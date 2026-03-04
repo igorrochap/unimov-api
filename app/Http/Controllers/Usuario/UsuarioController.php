@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Usuario;
 
 use App\Actions\Usuario\AtualizaUsuario;
 use App\Actions\Usuario\CriaUsuario;
+use App\Actions\Usuario\DeletaUsuario;
 use App\Actions\Usuario\ListaUsuarios;
 use App\DTO\Request\Usuario\AtualizaUsuarioDTO;
 use App\DTO\Request\Usuario\NovoUsuarioDTO;
@@ -31,5 +32,12 @@ final class UsuarioController extends Controller
         $usuario = $action->executa(AtualizaUsuarioDTO::porRequest($request));
 
         return $this->sucesso($usuario);
+    }
+
+    public function destroy(string $uuid, DeletaUsuario $action): JsonResponse
+    {
+        $action->executa($uuid);
+
+        return $this->semConteudo();
     }
 }
