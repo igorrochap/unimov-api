@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Municipio\Municipio;
 use App\Support\ValueObjects\UUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -36,6 +38,11 @@ class Usuario extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function municipio(): BelongsTo
+    {
+        return $this->belongsTo(Municipio::class);
+    }
 
     protected static function boot(): void
     {
