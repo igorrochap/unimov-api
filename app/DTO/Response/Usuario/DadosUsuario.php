@@ -4,7 +4,7 @@ namespace App\DTO\Response\Usuario;
 
 use App\Models\Usuario;
 
-final readonly class UsuarioListado
+final readonly class DadosUsuario
 {
     public function __construct(
         public string $uuid,
@@ -14,7 +14,7 @@ final readonly class UsuarioListado
         public string $perfil,
     ) {}
 
-    public static function porUsuario(Usuario $usuario): UsuarioListado
+    public static function porUsuario(Usuario $usuario): DadosUsuario
     {
         return new self(
             $usuario->uuid,

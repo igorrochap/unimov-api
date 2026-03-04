@@ -1,7 +1,7 @@
 <?php
 
 use App\Actions\Usuario\ListaUsuarios;
-use App\DTO\Response\Usuario\UsuarioListado;
+use App\DTO\Response\Usuario\DadosUsuario;
 use App\Models\Municipio\Municipio;
 use App\Models\Usuario;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -24,7 +24,7 @@ test('retorna usuarios listados como dto', function () {
 
     $resultado = $this->action->executa();
 
-    expect($resultado->first())->toBeInstanceOf(UsuarioListado::class);
+    expect($resultado->first())->toBeInstanceOf(DadosUsuario::class);
 });
 
 test('retorna campos corretos no dto', function () {
