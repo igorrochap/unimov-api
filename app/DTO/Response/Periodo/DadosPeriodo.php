@@ -7,23 +7,25 @@ use App\Models\Periodo;
 final readonly class DadosPeriodo
 {
     public function __construct(
-        public int $municipio,
+        public int $id,
+        public int $municipio_id,
         public string $descricao,
-        public \DateTime $inicio_inscricao,
-        public \DateTime $fim_inscricao,
-        public \DateTime $inicio,
-        public \DateTime $fim,
+        public string $inicio_inscricao,
+        public string $fim_inscricao,
+        public string $inicio,
+        public string $fim,
     ){}
 
     public static function porPeriodo(Periodo $request): DadosPeriodo
     {
         return new self(
-            $request->integer('municipio'),
-            $request->string('descricao'),
-            $request->date('inicio_inscricao'),
-            $request->date('fim_inscricao'),
-            $request->date('inicio'),
-            $request->date('fim'),
+            $request->id,
+            $request->municipio_id,
+            $request->descricao,
+            $request->inicio_inscricao,
+            $request->fim_inscricao,
+            $request->inicio,
+            $request->fim,
         );
     }
 }

@@ -2,16 +2,16 @@
 
 namespace App\DTO\Request\Periodo;
 
-use App\Http\Requests\Periodo\NovoPeriodoVigenciaRequest;
+use App\Http\Requests\Periodo\NovoPeriodoLetivoRequest;
 
-class PeriodoVigenciaDTO
+class PeriodoLetivoDTO
 {
     public function __construct(
         public \DateTime $inicio,
         public \DateTime $fim,
     ){}
 
-    public static function porRequest(NovoPeriodoVigenciaRequest $request): PeriodoVigenciaDTO
+    public static function porRequest(NovoPeriodoLetivoRequest $request): PeriodoLetivoDTO
     {
         return new self(
             $request->date('inicio'),
