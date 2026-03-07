@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('periodos', function (Blueprint $table) {
             $table->id();
-            $table->foreign('municipio_id');;
+            $table->foreignId('municipio_id')->constrained('municipios');
             $table->string('descricao');
             $table->dateTime('inicio_inscricao');
             $table->dateTime('fim_inscricao');
