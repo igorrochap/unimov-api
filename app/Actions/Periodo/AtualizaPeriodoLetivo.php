@@ -2,13 +2,13 @@
 
 namespace App\Actions\Periodo;
 
-use App\DTO\Request\Periodo\PeriodoVigenciaDTO;
+use App\DTO\Request\Periodo\PeriodoLetivoDTO;
 use App\DTO\Response\Periodo\DadosPeriodo;
 use App\Models\Periodo;
 
-class AtualizaPeriodoVigencia
+class AtualizaPeriodoLetivo
 {
-    public function executa(int $id, PeriodoVigenciaDTO $dto): DadosPeriodo
+    public function executa(int $id, PeriodoLetivoDTO $dto): DadosPeriodo
     {
         $periodo = Periodo::query()
             ->with('municipio')

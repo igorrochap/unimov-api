@@ -4,7 +4,7 @@ namespace App\Http\Requests\Periodo;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class NovoPeriodoVigenciaRequest extends FormRequest
+class NovoPeriodoLetivoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

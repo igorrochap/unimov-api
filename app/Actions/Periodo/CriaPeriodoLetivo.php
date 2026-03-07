@@ -2,13 +2,13 @@
 
 namespace App\Actions\Periodo;
 
-use App\DTO\Request\Periodo\PeriodoVigenciaDTO;
+use App\DTO\Request\Periodo\PeriodoLetivoDTO;
 use App\DTO\Response\Periodo\DadosPeriodo;
 use App\Models\Periodo;
 
-class CriaPeriodoVigencia
+class CriaPeriodoLetivo
 {
-    public function executa(PeriodoVigenciaDTO $dto): DadosPeriodo
+    public function executa(PeriodoLetivoDTO $dto): DadosPeriodo
     {
         $periodo = Periodo::query()->create($dto->toArray());
 
