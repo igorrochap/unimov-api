@@ -35,9 +35,14 @@ class Usuario extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        'password',
+        'senha',
         'remember_token',
     ];
+
+    public function getAuthPassword(): string
+    {
+        return $this->senha;
+    }
 
     /** @return BelongsTo<Municipio, $this> */
     public function municipio(): BelongsTo

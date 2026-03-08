@@ -7,6 +7,10 @@ use function Pest\Laravel\assertDatabaseMissing;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function () {
+    $this->actingAs(Usuario::factory()->create());
+});
+
 test('deleta usuario', function () {
     $usuario = Usuario::factory()->create();
 

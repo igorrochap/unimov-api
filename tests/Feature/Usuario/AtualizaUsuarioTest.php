@@ -6,6 +6,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function () {
+    $this->actingAs(Usuario::factory()->create());
+});
+
 test('atualiza usuario', function () {
     $usuario = Usuario::factory()->create();
     $municipio = Municipio::factory()->create();
