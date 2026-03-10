@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('descricao');
             $table->dateTime('inicio_inscricao');
             $table->dateTime('fim_inscricao');
-            $table->dateTime('inicio');
-            $table->dateTime('fim');
+            $table->dateTime('inicio')->nullable();
+            $table->dateTime('fim')->nullable();
             $table->timestamps();
         });
     }

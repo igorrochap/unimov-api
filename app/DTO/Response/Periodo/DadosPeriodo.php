@@ -12,8 +12,8 @@ final readonly class DadosPeriodo
         public string $descricao,
         public string $inicio_inscricao,
         public string $fim_inscricao,
-        public string $inicio,
-        public string $fim,
+        public ?string $inicio, // Permitir nulo para criações parciais
+        public ?string $fim,    // Permitir nulo para criações parciais
     ){}
 
     public static function porPeriodo(Periodo $request): DadosPeriodo
