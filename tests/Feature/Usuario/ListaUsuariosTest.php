@@ -6,6 +6,10 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
+beforeEach(function () {
+    $this->actingAs(Usuario::factory()->create());
+});
+
 test('lista usuarios paginados', function () {
     Usuario::factory()->count(3)->create();
 
@@ -36,8 +40,8 @@ test('retorna dados corretos do usuario', function () {
         ]);
 });
 
-test('retorna lista vazia quando nao ha usuarios', function () {
+test('retorna apenas o usuario autenticado quando nao ha outros usuarios', function () {
     $this->getJson(route('usuarios.lista'))
         ->assertSuccessful()
-        ->assertJson(['data' => [], 'total' => 0]);
+        ->assertJsonCount(1, 'data');
 });
