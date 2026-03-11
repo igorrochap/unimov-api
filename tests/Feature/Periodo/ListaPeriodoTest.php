@@ -16,7 +16,7 @@ test('lista periodos paginados', function () {
             'data' => [
                 '*' => [
                     'id',
-                    'municipio_id',
+                    'municipio_nome',
                     'descricao',
                     'inicio_inscricao',
                     'fim_inscricao',
@@ -42,7 +42,7 @@ test('retorna dados corretos do periodo', function () {
         ->assertSuccessful()
         ->assertJsonFragment([
             'id' => $periodo->id,
-            'municipio_id' => $municipio->id,
+            'municipio_nome' => $municipio->nome,
             'descricao' => 'Semestre Letivo 2026.1',
             'inicio_inscricao' => $periodo->inicio_inscricao->format('Y-m-d H:i:s'),
         ]);

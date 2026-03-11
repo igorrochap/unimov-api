@@ -5,7 +5,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
-test('cria um período completo', function () {
+test('cria um período', function () {
     $municipio = Municipio::factory()->create();
 
     $payload = [
@@ -21,7 +21,7 @@ test('cria um período completo', function () {
 
     $response->assertCreated();
     $response->assertJsonStructure([
-        'id', 'descricao', 'municipio_id'
+        'id', 'descricao', 'municipio_nome'
     ]);
 
     $this->assertDatabaseHas('periodos', [

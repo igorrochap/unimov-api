@@ -25,7 +25,7 @@ test('atualiza periodo', function () {
         ->assertSuccessful()
         ->assertJsonStructure([
             'id',
-            'municipio_id',
+            'municipio_nome',
             'descricao',
             'inicio_inscricao',
             'fim_inscricao',
@@ -52,7 +52,7 @@ test('retorna dados atualizados na resposta', function () {
         ->assertSuccessful()
         ->assertJsonFragment([
             'id' => $periodo->id,
-            'municipio_id' => $municipio->id,
+            'municipio_nome' => $municipio->nome,
             'descricao' => 'Periodo Atualizado',
         ]);
 });
