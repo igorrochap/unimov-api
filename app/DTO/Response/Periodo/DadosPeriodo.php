@@ -8,24 +8,24 @@ final readonly class DadosPeriodo
 {
     public function __construct(
         public int $id,
-        public int $municipio_id,
+        public string $municipio_nome,
         public string $descricao,
         public string $inicio_inscricao,
         public string $fim_inscricao,
-        public ?string $inicio, // Permitir nulo para criações parciais
-        public ?string $fim,    // Permitir nulo para criações parciais
+        public string $inicio,
+        public string $fim,
     ){}
 
-    public static function porPeriodo(Periodo $request): DadosPeriodo
+    public static function porPeriodo(Periodo $periodo): DadosPeriodo
     {
         return new self(
-            $request->id,
-            $request->municipio_id,
-            $request->descricao,
-            $request->inicio_inscricao,
-            $request->fim_inscricao,
-            $request->inicio,
-            $request->fim,
+            $periodo->id,
+            $periodo->municipio->nome,
+            $periodo->descricao,
+            $periodo->inicio_inscricao->format('Y-m-d H:i:s'),
+            $periodo->fim_inscricao->format('Y-m-d H:i:s'),
+            $periodo->inicio->format('Y-m-d H:i:s'),
+            $periodo->fim->format('Y-m-d H:i:s'),
         );
     }
 }
