@@ -21,7 +21,7 @@ final readonly class DadosUsuario
             $usuario->nome,
             $usuario->email,
             $usuario->municipio->nome,
-            $usuario->perfil,
+            $usuario->perfil->value,
         );
     }
 }

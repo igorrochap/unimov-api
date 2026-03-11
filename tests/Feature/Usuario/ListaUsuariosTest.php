@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Perfil;
 use App\Models\Municipio\Municipio;
 use App\Models\Usuario;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -7,7 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 beforeEach(function () {
-    $this->actingAs(Usuario::factory()->create());
+    $this->actingAs(Usuario::factory()->create(['perfil' => Perfil::Admin]));
 });
 
 test('lista usuarios paginados', function () {
@@ -45,3 +46,15 @@ test('retorna apenas o usuario autenticado quando nao ha outros usuarios', funct
         ->assertSuccessful()
         ->assertJsonCount(1, 'data');
 });
+
+test('retorna 403 para usuario nao admin', function (Perfil $perfil) {
+    $this->actingAs(Usuario::factory()->create(['perfil' => $perfil]));
+
+    $this->getJson(route('usuarios.lista'))
+        ->assertForbidden();
+})->with([
+    'secretaria' => [Perfil::Secretaria],
+    'fiscal' => [Perfil::Fiscal],
+    'motorista' => [Perfil::Motorista],
+    'aluno' => [Perfil::Aluno],
+]);

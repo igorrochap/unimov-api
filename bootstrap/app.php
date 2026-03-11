@@ -12,12 +12,13 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
         then: function () {
-            Route::middleware(['api', 'auth:sanctum'])->prefix('api/usuarios')->group(base_path('routes/api/usuarios.php'));
+            Route::middleware(['api', 'auth:sanctum', 'perfil:admin'])->prefix('api/usuarios')->group(base_path('routes/api/usuarios.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->prepend(HandleCors::class);
         $middleware->statefulApi();
+        $middleware->alias(['perfil' => \App\Http\Middleware\VerificaPerfil::class]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

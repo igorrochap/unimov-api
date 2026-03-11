@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\Perfil;
 use App\Models\Municipio\Municipio;
 use App\Models\Usuario;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -25,7 +26,7 @@ class UsuarioFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'senha' => Hash::make('password'),
             'municipio_id' => Municipio::factory(),
-            'perfil' => fake()->randomElement(['admin', 'secretaria', 'fiscal', 'motorista', 'aluno']),
+            'perfil' => fake()->randomElement(Perfil::cases()),
         ];
     }
 }
