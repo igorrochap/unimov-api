@@ -1,7 +1,7 @@
 <?php
 
 use App\Actions\Periodo\AtualizaPeriodo;
-use App\DTO\Request\Periodo\PeriodoDTO;
+use App\DTO\Request\Periodo\AtualizaPeriodoDTO;
 use App\DTO\Response\Periodo\DadosPeriodo;
 use App\Models\Municipio\Municipio;
 use App\Models\Periodo;
@@ -16,7 +16,8 @@ beforeEach(function () {
 test('atualiza periodo', function () {
     $periodo   = Periodo::factory()->create();
     $municipio = Municipio::factory()->create();
-    $dto = new PeriodoDTO(
+    $dto = new AtualizaPeriodoDTO(
+        $periodo->id,
         $municipio->id,
         'Período Atualizado',
         new \DateTime('2025-01-01 00:00:00'),
@@ -24,7 +25,7 @@ test('atualiza periodo', function () {
         new \DateTime('2025-02-01 00:00:00'),
         new \DateTime('2025-02-10 00:00:00'));
 
-    $resultado = $this->action->executa($periodo->id, $dto);
+    $resultado = $this->action->executa($dto);
 
     expect($resultado)->toBeInstanceOf(DadosPeriodo::class);
 });
@@ -32,21 +33,21 @@ test('atualiza periodo', function () {
 test('retorna dados atualizados', function () {
     $periodo   = Periodo::factory()->create();
     $municipio = Municipio::factory()->create();
-    $dto = new PeriodoDTO($municipio->id, 'Período Atualizado', new \DateTime('2025-01-01 00:00:00'), new \DateTime('2025-01-10 00:00:00'), new \DateTime('2025-02-01 00:00:00'), new \DateTime('2025-02-10 00:00:00'));
+    $dto = new AtualizaPeriodoDTO($periodo->id, $municipio->id, 'Período Atualizado', new \DateTime('2025-01-01 00:00:00'), new \DateTime('2025-01-10 00:00:00'), new \DateTime('2025-02-01 00:00:00'), new \DateTime('2025-02-10 00:00:00'));
 
-    $resultado = $this->action->executa($periodo->id, $dto);
+    $resultado = $this->action->executa($dto);
 
     expect($resultado->id)->toBe($periodo->id)
         ->and($resultado->descricao)->toBe('Período Atualizado')
-        ->and($resultado->municipio_id)->toBe($municipio->id);
+        ->and($resultado->municipio_nome)->toBe($municipio->nome);
 });
 
 test('persiste alteracoes no banco de dados', function () {
     $periodo   = Periodo::factory()->create();
     $municipio = Municipio::factory()->create();
-    $dto = new PeriodoDTO($municipio->id, 'Período Atualizado', new \DateTime('2025-01-01 00:00:00'), new \DateTime('2025-01-10 00:00:00'), new \DateTime('2025-02-01 00:00:00'), new \DateTime('2025-02-10 00:00:00'));
+    $dto = new AtualizaPeriodoDTO($periodo->id, $municipio->id, 'Período Atualizado', new \DateTime('2025-01-01 00:00:00'), new \DateTime('2025-01-10 00:00:00'), new \DateTime('2025-02-01 00:00:00'), new \DateTime('2025-02-10 00:00:00'));
 
-    $this->action->executa($periodo->id, $dto);
+    $this->action->executa($dto);
 
     $this->assertDatabaseHas('periodos', [
         'id'               => $periodo->id,
@@ -61,7 +62,7 @@ test('persiste alteracoes no banco de dados', function () {
 
 test('lanca excecao para id inexistente', function () {
     $municipio = Municipio::factory()->create();
-    $dto = new PeriodoDTO($municipio->id, 'Período Atualizado', new \DateTime('2025-01-01 00:00:00'), new \DateTime('2025-01-10 00:00:00'), new \DateTime('2025-02-01 00:00:00'), new \DateTime('2025-02-10 00:00:00'));
+    $dto = new AtualizaPeriodoDTO(999, $municipio->id, 'Período Atualizado', new \DateTime('2025-01-01 00:00:00'), new \DateTime('2025-01-10 00:00:00'), new \DateTime('2025-02-01 00:00:00'), new \DateTime('2025-02-10 00:00:00'));
 
-    $this->action->executa(999, $dto);
+    $this->action->executa($dto);
 })->throws(\Illuminate\Database\Eloquent\ModelNotFoundException::class);
