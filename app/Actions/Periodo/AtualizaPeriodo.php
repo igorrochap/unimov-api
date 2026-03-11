@@ -2,17 +2,17 @@
 
 namespace App\Actions\Periodo;
 
-use App\DTO\Request\Periodo\PeriodoDTO;
+use App\DTO\Request\Periodo\AtualizaPeriodoDTO;
 use App\DTO\Response\Periodo\DadosPeriodo;
 use App\Models\Periodo;
 
 class AtualizaPeriodo
 {
-    public function executa(int $id, PeriodoDTO $dto): DadosPeriodo
+    public function executa(AtualizaPeriodoDTO $dto): DadosPeriodo
     {
         $periodo = Periodo::query()
             ->with('municipio')
-            ->where('id', $id)
+            ->where('id', $dto->id)
             ->firstOrFail();
 
         $periodo->update($dto->toArray());
