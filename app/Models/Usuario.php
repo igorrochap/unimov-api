@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property Perfil $perfil
+ */
 class Usuario extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UsuarioFactory> */
