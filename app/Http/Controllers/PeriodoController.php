@@ -50,7 +50,7 @@ class PeriodoController extends Controller
     }
 
     // Metodo para criar Atualizar Período Geral
-    public function update(string $id, NovoPeriodoRequest $request, AtualizaPeriodo $action): JsonResponse
+    public function update(int $id, NovoPeriodoRequest $request, AtualizaPeriodo $action): JsonResponse
     {
         $periodo = $action->executa($id, PeriodoDTO::porPeriodo($request));
 
@@ -58,7 +58,7 @@ class PeriodoController extends Controller
     }
 
     // Metodo para criar Atualizar Período Inscrição
-    public function updatePeriodoInscricao(string $id, NovoPeriodoInscricaoRequest $request, AtualizaPeriodoInscricao $action): JsonResponse
+    public function updatePeriodoInscricao(int $id, NovoPeriodoInscricaoRequest $request, AtualizaPeriodoInscricao $action): JsonResponse
     {
         $periodo = $action->executa($id, PeriodoInscricaoDTO::porRequest($request));
 
@@ -66,14 +66,14 @@ class PeriodoController extends Controller
     }
 
     // Metodo para criar Atualizar Período Letivo
-    public function updatePeriodoLetivo(string $id, NovoPeriodoLetivoRequest $request, AtualizaPeriodoLetivo $action): JsonResponse
+    public function updatePeriodoLetivo(int $id, NovoPeriodoLetivoRequest $request, AtualizaPeriodoLetivo $action): JsonResponse
     {
         $periodo = $action->executa($id, PeriodoLetivoDTO::porRequest($request));
 
         return $this->sucesso($periodo);
     }
 
-    public function destroy(string $id, DeletaPeriodo $action): JsonResponse
+    public function destroy(int $id, DeletaPeriodo $action): JsonResponse
     {
         $action->executa($id);
 
