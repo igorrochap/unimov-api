@@ -8,6 +8,3 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('', fn () => response()->json(['Hello World']));
-
-// Rota de Períodos
-Route::prefix('periodos')->group(base_path('routes/api/periodos.php'));
