@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Perfil;
 use App\Models\Municipio\Municipio;
 use App\Support\ValueObjects\UUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -67,6 +68,7 @@ class Usuario extends Authenticatable
     {
         return [
             'senha' => 'hashed',
+            'perfil' => Perfil::class,
         ];
     }
 }

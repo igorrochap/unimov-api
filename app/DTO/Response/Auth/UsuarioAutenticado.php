@@ -19,7 +19,7 @@ final readonly class UsuarioAutenticado
             $usuario->uuid,
             $usuario->nome,
             $usuario->email,
-            $usuario->perfil,
+            $usuario->perfil->value,
         );
     }
 }
