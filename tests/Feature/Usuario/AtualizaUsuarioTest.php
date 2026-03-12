@@ -1,10 +1,15 @@
 <?php
 
+use App\Enums\Perfil;
 use App\Models\Municipio\Municipio;
 use App\Models\Usuario;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    $this->actingAs(Usuario::factory()->create(['perfil' => Perfil::Admin]));
+});
 
 test('atualiza usuario', function () {
     $usuario = Usuario::factory()->create();
@@ -104,6 +109,18 @@ test('valida email duplicado de outro usuario na atualizacao', function () {
         ->assertUnprocessable()
         ->assertJsonValidationErrors(['email']);
 });
+
+test('retorna 403 para usuario nao admin', function (Perfil $perfil) {
+    $this->actingAs(Usuario::factory()->create(['perfil' => $perfil]));
+
+    $this->putJson(route('usuarios.atualiza', 'qualquer-uuid'), [])
+        ->assertForbidden();
+})->with([
+    'secretaria' => [Perfil::Secretaria],
+    'fiscal' => [Perfil::Fiscal],
+    'motorista' => [Perfil::Motorista],
+    'aluno' => [Perfil::Aluno],
+]);
 
 test('valida cpf duplicado de outro usuario na atualizacao', function () {
     $outro = Usuario::factory()->create(['cpf' => '111.111.111-11']);

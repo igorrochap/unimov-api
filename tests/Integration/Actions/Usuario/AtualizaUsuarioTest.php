@@ -39,7 +39,7 @@ test('retorna dados atualizados', function () {
 
 test('atualiza senha quando informada', function () {
     $usuario = Usuario::factory()->create();
-    $dto = new AtualizaUsuarioDTO($usuario->uuid, $usuario->nome, $usuario->cpf, $usuario->email, 'nova_senha', $usuario->municipio_id, $usuario->perfil);
+    $dto = new AtualizaUsuarioDTO($usuario->uuid, $usuario->nome, $usuario->cpf, $usuario->email, 'nova_senha', $usuario->municipio_id, $usuario->perfil->value);
 
     $this->action->executa($dto);
 

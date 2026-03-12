@@ -38,7 +38,7 @@ test('retorna campos corretos no dto', function () {
         ->and($dto->nome)->toBe($usuario->nome)
         ->and($dto->email)->toBe($usuario->email)
         ->and($dto->municipio)->toBe($municipio->nome)
-        ->and($dto->perfil)->toBe($usuario->perfil);
+        ->and($dto->perfil)->toBe($usuario->perfil->value);
 });
 
 test('retorna lista vazia quando nao ha usuarios', function () {

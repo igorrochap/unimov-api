@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Perfil;
 use App\Models\Municipio\Municipio;
 use App\Support\ValueObjects\UUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,6 +10,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * @property Perfil $perfil
+ */
 class Usuario extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UsuarioFactory> */
@@ -35,9 +39,14 @@ class Usuario extends Authenticatable
      * @var list<string>
      */
     protected $hidden = [
-        'password',
+        'senha',
         'remember_token',
     ];
+
+    public function getAuthPassword(): string
+    {
+        return $this->senha;
+    }
 
     /** @return BelongsTo<Municipio, $this> */
     public function municipio(): BelongsTo
@@ -62,6 +71,7 @@ class Usuario extends Authenticatable
     {
         return [
             'senha' => 'hashed',
+            'perfil' => Perfil::class,
         ];
     }
 }

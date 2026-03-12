@@ -1,10 +1,15 @@
 <?php
 
+use App\Enums\Perfil;
 use App\Models\Municipio\Municipio;
 use App\Models\Usuario;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    $this->actingAs(Usuario::factory()->create(['perfil' => Perfil::Admin]));
+});
 
 test('cria usuario', function () {
     $municipio = Municipio::factory()->create();
@@ -87,6 +92,18 @@ test('valida email duplicado', function () {
         ->assertUnprocessable()
         ->assertJsonValidationErrors(['email']);
 });
+
+test('retorna 403 para usuario nao admin', function (Perfil $perfil) {
+    $this->actingAs(Usuario::factory()->create(['perfil' => $perfil]));
+
+    $this->postJson(route('usuarios.cria'), [])
+        ->assertForbidden();
+})->with([
+    'secretaria' => [Perfil::Secretaria],
+    'fiscal' => [Perfil::Fiscal],
+    'motorista' => [Perfil::Motorista],
+    'aluno' => [Perfil::Aluno],
+]);
 
 test('valida cpf duplicado', function () {
     $municipio = Municipio::factory()->create();
