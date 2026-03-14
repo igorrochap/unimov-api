@@ -2,8 +2,14 @@
 
 use App\Models\Municipio\Municipio;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Usuario;
+use App\Enums\Perfil;
 
 uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    $this->actingAs(Usuario::factory()->create(['perfil' => Perfil::Secretaria]));
+});
 
 test('cria um período', function () {
     $municipio = Municipio::factory()->create();

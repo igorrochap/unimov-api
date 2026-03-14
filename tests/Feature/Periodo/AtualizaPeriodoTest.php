@@ -4,8 +4,14 @@
 use App\Models\Periodo;
 use App\Models\Municipio\Municipio;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Usuario;
+use App\Enums\Perfil;
 
 uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    $this->actingAs(Usuario::factory()->create(['perfil' => Perfil::Secretaria]));
+});
 
 test('atualiza periodo', function () {
     $municipio = Municipio::factory()->create();

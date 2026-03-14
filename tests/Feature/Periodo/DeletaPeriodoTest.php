@@ -2,10 +2,16 @@
 
 use App\Models\Periodo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Usuario;
+use App\Enums\Perfil;
 
 use function Pest\Laravel\assertDatabaseMissing;
 
 uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    $this->actingAs(Usuario::factory()->create(['perfil' => Perfil::Secretaria]));
+});
 
 test('deleta Período', function () {
     $periodo = Periodo::factory()->create();

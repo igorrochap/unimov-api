@@ -3,8 +3,14 @@
 use App\Models\Municipio\Municipio;
 use App\Models\Periodo;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Usuario;
+use App\Enums\Perfil;
 
 uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    $this->actingAs(Usuario::factory()->create(['perfil' => Perfil::Secretaria]));
+});
 
 test('lista periodos paginados', function () {
     // Cria 3 períodos usando a factory
