@@ -19,7 +19,7 @@ final readonly class AtualizaPeriodoDTO
     public static function porPeriodo(NovoPeriodoRequest $request): AtualizaPeriodoDTO
     {
         return new self(
-            $request->route('id'),
+            (int) $request->route('id'),
             $request->integer('municipio_id'),
             $request->string('descricao'),
             $request->date('inicio_inscricao'),
