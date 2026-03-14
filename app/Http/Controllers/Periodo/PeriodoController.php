@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Periodo;
 
 use App\Actions\Periodo\AtualizaPeriodo;
 use App\Actions\Periodo\CriaPeriodo;
@@ -8,6 +8,7 @@ use App\Actions\Periodo\DeletaPeriodo;
 use App\Actions\Periodo\ListaPeriodo;
 use App\DTO\Request\Periodo\AtualizaPeriodoDTO;
 use App\DTO\Request\Periodo\NovoPeriodoDTO;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\Periodo\NovoPeriodoRequest;
 use Illuminate\Http\JsonResponse;
 

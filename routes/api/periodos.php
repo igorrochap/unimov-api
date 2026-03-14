@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\PeriodoController;
+use App\Http\Controllers\Periodo\PeriodoController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(PeriodoController::class)->group(function () {
