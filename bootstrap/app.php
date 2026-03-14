@@ -13,7 +13,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
         then: function () {
             Route::middleware(['api', 'auth:sanctum', 'perfil:admin'])->prefix('api/usuarios')->group(base_path('routes/api/usuarios.php'));
-            Route::middleware(['api', 'auth:sanctum'])->prefix('api/periodos')->group(base_path('routes/api/periodos.php'));
+            Route::middleware(['api', 'auth:sanctum', 'perfil:admin,secretaria'])->prefix('api/periodos')->group(base_path('routes/api/periodos.php'));
         }
     )
     ->withMiddleware(function (Middleware $middleware): void {
