@@ -6,6 +6,26 @@ Autenticação: SPA stateful via **Laravel Sanctum** (cookie de sessão + CSRF).
 
 ---
 
+## Índice
+
+- [Autenticação](#autenticação)
+  - [Login](#login)
+  - [Logout](#logout)
+  - [Usuário autenticado](#usuário-autenticado)
+- [Usuários](#usuários)
+  - [Listar usuários](#listar-usuários)
+  - [Criar usuário](#criar-usuário)
+  - [Atualizar usuário](#atualizar-usuário)
+  - [Excluir usuário](#excluir-usuário)
+- [Períodos](#períodos)
+  - [Listar períodos](#listar-períodos)
+  - [Criar período](#criar-período)
+  - [Atualizar período](#atualizar-período)
+  - [Excluir período](#excluir-período)
+- [Perfis de acesso](#perfis-de-acesso)
+
+---
+
 ## Autenticação
 
 ### Login
@@ -92,13 +112,13 @@ Retorna os dados do usuário da sessão atual.
 
 ## Usuários
 
-Todos os endpoints abaixo requerem autenticação via `auth:sanctum`.
+Todos os endpoints abaixo requerem autenticação via `auth:sanctum` e perfil **`admin`**.
 
 ### Listar usuários
 
 `GET /api/usuarios`
 
-**Autenticação:** Requer `auth:sanctum`.
+**Autenticação:** Requer `auth:sanctum` + perfil `admin`.
 
 Retorna a lista paginada de todos os usuários cadastrados, com os dados do município de cada um.
 
@@ -126,9 +146,10 @@ Resposta paginada padrão do Laravel:
 
 #### Respostas de erro
 
-| Código | Cenário               |
-|--------|-----------------------|
-| `401`  | Usuário não autenticado |
+| Código | Cenário                    |
+|--------|----------------------------|
+| `401`  | Usuário não autenticado    |
+| `403`  | Perfil sem permissão       |
 
 ---
 
@@ -136,7 +157,7 @@ Resposta paginada padrão do Laravel:
 
 `POST /api/usuarios`
 
-**Autenticação:** Requer `auth:sanctum`.
+**Autenticação:** Requer `auth:sanctum` + perfil `admin`.
 
 Cadastra um novo usuário no sistema.
 
@@ -166,6 +187,7 @@ Cadastra um novo usuário no sistema.
 | Código | Cenário                                                  |
 |--------|----------------------------------------------------------|
 | `401`  | Usuário não autenticado                                  |
+| `403`  | Perfil sem permissão                                     |
 | `422`  | Campos obrigatórios ausentes ou inválidos                |
 | `422`  | E-mail ou CPF já cadastrados                             |
 | `422`  | `perfil` com valor fora dos permitidos                   |
@@ -188,7 +210,7 @@ Cadastra um novo usuário no sistema.
 
 `PUT /api/usuarios/{uuid}`
 
-**Autenticação:** Requer `auth:sanctum`.
+**Autenticação:** Requer `auth:sanctum` + perfil `admin`.
 
 Atualiza os dados de um usuário existente identificado pelo UUID.
 
@@ -226,6 +248,7 @@ Atualiza os dados de um usuário existente identificado pelo UUID.
 | Código | Cenário                                                  |
 |--------|----------------------------------------------------------|
 | `401`  | Usuário não autenticado                                  |
+| `403`  | Perfil sem permissão                                     |
 | `404`  | UUID não encontrado                                      |
 | `422`  | Campos obrigatórios ausentes ou inválidos                |
 | `422`  | E-mail ou CPF já em uso por outro usuário                |
@@ -236,7 +259,7 @@ Atualiza os dados de um usuário existente identificado pelo UUID.
 
 `DELETE /api/usuarios/{uuid}`
 
-**Autenticação:** Requer `auth:sanctum`.
+**Autenticação:** Requer `auth:sanctum` + perfil `admin`.
 
 Remove permanentemente um usuário do sistema.
 
@@ -255,7 +278,193 @@ Sem corpo na resposta.
 | Código | Cenário                 |
 |--------|-------------------------|
 | `401`  | Usuário não autenticado |
+| `403`  | Perfil sem permissão    |
 | `404`  | UUID não encontrado     |
+
+---
+
+## Períodos
+
+Todos os endpoints abaixo requerem autenticação via `auth:sanctum` e perfil **`admin`** ou **`secretaria`**.
+
+### Listar períodos
+
+`GET /api/periodos`
+
+**Autenticação:** Requer `auth:sanctum` + perfil `admin` ou `secretaria`.
+
+Retorna a lista paginada de todos os períodos cadastrados, ordenados por data de início (mais recentes primeiro).
+
+#### Resposta de sucesso — `200 OK`
+
+Resposta paginada padrão do Laravel:
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "municipio_nome": "Maceió",
+      "descricao": "Período 2024/1",
+      "inicio_inscricao": "2024-01-01 00:00:00",
+      "fim_inscricao": "2024-01-31 00:00:00",
+      "inicio": "2024-02-01 00:00:00",
+      "fim": "2024-12-31 00:00:00"
+    }
+  ],
+  "current_page": 1,
+  "last_page": 2,
+  "per_page": 15,
+  "total": 20
+}
+```
+
+#### Respostas de erro
+
+| Código | Cenário                 |
+|--------|-------------------------|
+| `401`  | Usuário não autenticado |
+| `403`  | Perfil sem permissão    |
+
+---
+
+### Criar período
+
+`POST /api/periodos`
+
+**Autenticação:** Requer `auth:sanctum` + perfil `admin` ou `secretaria`.
+
+Cadastra um novo período no sistema.
+
+#### Corpo da requisição
+
+| Campo               | Tipo   | Obrigatório | Validações                                          | Descrição                                              |
+|---------------------|--------|-------------|-----------------------------------------------------|--------------------------------------------------------|
+| `municipio_id`      | inteiro| Sim         | Deve referenciar um `id` existente em `municipios`  | ID do município do período                             |
+| `descricao`         | string | Sim         | —                                                   | Descrição do período (ex.: "Período 2024/1")           |
+| `inicio_inscricao`  | string | Sim         | Formato de data/hora válido                         | Data e hora de início das inscrições                   |
+| `fim_inscricao`     | string | Sim         | Data/hora válida; deve ser posterior a `inicio_inscricao` | Data e hora de término das inscrições           |
+| `inicio`            | string | Sim         | Formato de data/hora válido                         | Data e hora de início operacional do período           |
+| `fim`               | string | Sim         | Data/hora válida; deve ser posterior a `inicio`     | Data e hora de término operacional do período          |
+
+#### Resposta de sucesso — `201 Created`
+
+```json
+{
+  "id": 1,
+  "municipio_nome": "Maceió",
+  "descricao": "Período 2024/1",
+  "inicio_inscricao": "2024-01-01 00:00:00",
+  "fim_inscricao": "2024-01-31 00:00:00",
+  "inicio": "2024-02-01 00:00:00",
+  "fim": "2024-12-31 00:00:00"
+}
+```
+
+#### Respostas de erro
+
+| Código | Cenário                                                  |
+|--------|----------------------------------------------------------|
+| `401`  | Usuário não autenticado                                  |
+| `403`  | Perfil sem permissão                                     |
+| `422`  | Campos obrigatórios ausentes ou inválidos                |
+| `422`  | `municipio_id` inexistente                               |
+| `422`  | `fim_inscricao` não é posterior a `inicio_inscricao`     |
+| `422`  | `fim` não é posterior a `inicio`                        |
+
+**Formato de erro de validação (`422`):**
+
+```json
+{
+  "message": "O município é obrigatório.",
+  "errors": {
+    "municipio_id": ["O município é obrigatório."]
+  }
+}
+```
+
+---
+
+### Atualizar período
+
+`PUT /api/periodos/{id}`
+
+**Autenticação:** Requer `auth:sanctum` + perfil `admin` ou `secretaria`.
+
+Atualiza os dados de um período existente identificado pelo ID.
+
+#### Parâmetros de path
+
+| Parâmetro | Tipo    | Descrição        |
+|-----------|---------|------------------|
+| `id`      | inteiro | ID do período    |
+
+#### Corpo da requisição
+
+Mesmos campos e validações do endpoint de criação.
+
+| Campo               | Tipo   | Obrigatório | Validações                                          | Descrição                                              |
+|---------------------|--------|-------------|-----------------------------------------------------|--------------------------------------------------------|
+| `municipio_id`      | inteiro| Sim         | Deve referenciar um `id` existente em `municipios`  | ID do município do período                             |
+| `descricao`         | string | Sim         | —                                                   | Descrição do período                                   |
+| `inicio_inscricao`  | string | Sim         | Formato de data/hora válido                         | Data e hora de início das inscrições                   |
+| `fim_inscricao`     | string | Sim         | Data/hora válida; deve ser posterior a `inicio_inscricao` | Data e hora de término das inscrições           |
+| `inicio`            | string | Sim         | Formato de data/hora válido                         | Data e hora de início operacional do período           |
+| `fim`               | string | Sim         | Data/hora válida; deve ser posterior a `inicio`     | Data e hora de término operacional do período          |
+
+#### Resposta de sucesso — `200 OK`
+
+```json
+{
+  "id": 1,
+  "municipio_nome": "Maceió",
+  "descricao": "Período 2024/1 — Atualizado",
+  "inicio_inscricao": "2024-01-05 00:00:00",
+  "fim_inscricao": "2024-02-05 00:00:00",
+  "inicio": "2024-03-01 00:00:00",
+  "fim": "2024-12-31 00:00:00"
+}
+```
+
+#### Respostas de erro
+
+| Código | Cenário                                                  |
+|--------|----------------------------------------------------------|
+| `401`  | Usuário não autenticado                                  |
+| `403`  | Perfil sem permissão                                     |
+| `404`  | Período não encontrado                                   |
+| `422`  | Campos obrigatórios ausentes ou inválidos                |
+| `422`  | `municipio_id` inexistente                               |
+| `422`  | `fim_inscricao` não é posterior a `inicio_inscricao`     |
+| `422`  | `fim` não é posterior a `inicio`                        |
+
+---
+
+### Excluir período
+
+`DELETE /api/periodos/{id}`
+
+**Autenticação:** Requer `auth:sanctum` + perfil `admin` ou `secretaria`.
+
+Remove permanentemente um período do sistema.
+
+#### Parâmetros de path
+
+| Parâmetro | Tipo    | Descrição        |
+|-----------|---------|------------------|
+| `id`      | inteiro | ID do período    |
+
+#### Resposta de sucesso — `204 No Content`
+
+Sem corpo na resposta.
+
+#### Respostas de erro
+
+| Código | Cenário                 |
+|--------|-------------------------|
+| `401`  | Usuário não autenticado |
+| `403`  | Perfil sem permissão    |
+| `404`  | Período não encontrado  |
 
 ---
 
